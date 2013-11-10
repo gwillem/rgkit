@@ -57,13 +57,22 @@ class Render:
             self._win.after(self._settings.turn_interval, self.callback)
 
     def determine_color(self, loc):
+
         if loc in self._settings.obstacles:
             return '#222'
-        robot = self._game.robot_at_loc(loc)
-        if robot is not None:
-            return 'red' if robot == 0 else 'green'
-        return 'white'
 
+        robot = self._game.robot_at_loc(loc)
+        
+        if robot is None:
+            return 'white'
+             
+        colorhex = 5 + robot.hp / 5
+         
+        if robot.player_id == 0: # red
+            return '#%X00' % colorhex
+        else: # green
+            return '#0%X0' % colorhex
+        
     def paint(self):
         for y in range(self._settings.board_size):
             for x in range(self._settings.board_size):
